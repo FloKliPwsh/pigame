@@ -5,9 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Endless π game</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Passwortschutz-Stil */
+    .lockscreen {
+      background-color: rgba(255, 255, 255, 0.96);
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      width: 90%;
+      max-width: 360px;
+      text-align: center;
+      margin: auto;
+    }
+
+    .lockscreen input {
+      padding: 0.6rem;
+      font-size: 1rem;
+      width: 80%;
+      margin-bottom: 1rem;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .lockscreen button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      background-color: #007acc;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .lockscreen button:hover {
+      background-color: #005f99;
+    }
+
+    .container {
+      display: none;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+      margin-top: 0.5rem;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
 </head>
 <body>
 
+  <!-- Passwortschutz -->
+  <div id="lockscreen" class="lockscreen">
+    <h2>Zutritt nur mit Passwort</h2>
+    <input type="password" id="passwordInput" placeholder="Passwort eingeben" />
+    <button onclick="checkPassword()">Login</button>
+    <div id="loginError" class="error"></div>
+  </div>
+
+  <!-- Spielbereich -->
   <div class="container">
     <h1 class="title">Endless π game<span class="beta">BETA</span></h1>
     <p class="subtitle">Tippe die Nachkommastellen von π ein</p>
@@ -22,13 +98,29 @@
   </div>
 
   <script>
+    const correctPassword = "Pi2025"; // ← Ändere hier dein Passwort
+    const lockscreen = document.getElementById('lockscreen');
+    const container = document.querySelector('.container');
+    const errorBox = document.getElementById('loginError');
+
+    function checkPassword() {
+      const input = document.getElementById('passwordInput').value;
+      if (input === correctPassword) {
+        lockscreen.style.display = "none";
+        container.style.display = "block";
+        inputField.focus();
+      } else {
+        errorBox.textContent = "❌ Falsches Passwort!";
+      }
+    }
+
+    // --- Spielcode ---
     const piDecimals = "141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481";
 
     const inputField = document.getElementById('decimalInput');
     const errorDiv = document.getElementById('error');
     const resetButton = document.getElementById('resetButton');
 
-    // Sicherheitsmaßnahmen
     inputField.addEventListener('paste', (e) => {
       e.preventDefault();
       showLockdown("⛔ Haha guter Versuch!");
@@ -67,7 +159,6 @@
       inputField.classList.remove("invalid");
     });
 
-    // Enter-Taste für Neustart
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && inputField.disabled) {
         resetGame();
