@@ -2,18 +2,19 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>PI Game BETA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Endless π Game</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
   <div class="container">
     <h1 class="title">PI Game <span class="beta">BETA</span></h1>
-    <p class="subtitle">Tippe die Nachkommastellen von π</p>
+    <p class="subtitle">Tippe die Nachkommastellen von π ein</p>
 
     <div class="input-wrapper">
       <span class="prefix">3,…</span>
-      <input type="text" id="decimalInput" placeholder="z. B. 14159" autocomplete="off" />
+      <input type="text" id="decimalInput" placeholder="14159…" autocomplete="off" />
     </div>
 
     <div id="error" class="error"></div>
@@ -21,11 +22,18 @@
   </div>
 
   <script>
-    const piDecimals = "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
+    // Mindestens 150 Pi-Nachkommastellen (nur Ziffern)
+    const piDecimals =
+      "141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481";
 
     const inputField = document.getElementById('decimalInput');
     const errorDiv = document.getElementById('error');
     const resetButton = document.getElementById('resetButton');
+
+    // Copy-Paste, Drop & Rechtsklick blockieren
+    inputField.addEventListener('paste', e => e.preventDefault());
+    inputField.addEventListener('drop', e => e.preventDefault());
+    inputField.addEventListener('contextmenu', e => e.preventDefault());
 
     inputField.addEventListener('input', () => {
       const input = inputField.value.trim();
