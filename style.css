@@ -20,28 +20,21 @@ h1 {
 }
 
 input {
-  width: 100px;
+  width: 150px;
   padding: 0.5rem;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  outline: none;
 }
 
-button {
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border: none;
-  background-color: #007acc;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #005f99;
+input.invalid {
+  border-color: red;
+  background-color: #ffe6e6;
 }
 
 .error {
   color: red;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
+  font-weight: bold;
 }
