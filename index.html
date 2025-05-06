@@ -2,46 +2,46 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Pi-Nachkommastellen prüfen</title>
+  <title>Live-Prüfung: Nachkommastellen von π</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <h1>Gib die Nachkommastellen von π ein</h1>
+  <h1>Tippe die Nachkommastellen von π</h1>
 
   <div class="input-wrapper">
     <span class="prefix">3,…</span>
-    <input type="text" id="decimalInput" placeholder="z. B. 14159" />
+    <input type="text" id="decimalInput" placeholder="z. B. ...." autocomplete="off" />
   </div>
 
-  <button onclick="validate()">Prüfen</button>
   <div id="error" class="error"></div>
 
   <script>
-    // Erste 100 Nachkommastellen von PI (nur Ziffern)
     const piDecimals = "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
 
-    function validate() {
-      const input = document.getElementById('decimalInput').value.trim();
-      const errorDiv = document.getElementById('error');
+    const inputField = document.getElementById('decimalInput');
+    const errorDiv = document.getElementById('error');
 
-      // Prüfe, ob nur Ziffern eingegeben wurden
-      if (!/^\d+$/.test(input)) {
-        errorDiv.textContent = "⚠️ Bitte gib nur Ziffern ein – ohne Komma, ohne Punkte.";
-        throw new Error("Ungültige Eingabe abgebrochen.");
+    inputField.addEventListener('input', () => {
+      const input = inputField.value.trim();
+
+      // Prüfe: Nur Ziffern erlaubt
+      if (!/^\d*$/.test(input)) {
+        errorDiv.textContent = "⚠️ Nur Ziffern erlaubt!";
+        inputField.classList.add("invalid");
+        return;
       }
 
-      // Vergleich mit den echten Nachkommastellen
-      const correctPart = piDecimals.substring(0, input.length);
-      if (input !== correctPart) {
-        errorDiv.textContent = "❌ Falsch! Das sind nicht die korrekten Pi-Nachkommastellen.";
-        throw new Error("Falsche Pi-Stellen.");
+      // Prüfe: Eingabe korrekt so weit?
+      const expected = piDecimals.substring(0, input.length);
+      if (input !== expected) {
+        errorDiv.textContent = "❌ Falsch! Nicht die richtigen Pi-Nachkommastellen.";
+        inputField.classList.add("invalid");
+      } else {
+        errorDiv.textContent = "";
+        inputField.classList.remove("invalid");
       }
-
-      // Erfolg
-      errorDiv.textContent = "";
-      alert("✅ Bravo, das sind die richtigen Nachkommastellen von π!");
-    }
+    });
   </script>
 
 </body>
