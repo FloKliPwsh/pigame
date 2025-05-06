@@ -28,7 +28,7 @@
     const errorDiv = document.getElementById('error');
     const resetButton = document.getElementById('resetButton');
 
-    // Schutz: Kein Einfügen, Drag & Drop oder Rechtsklick
+    // Sicherheitsmaßnahmen
     inputField.addEventListener('paste', (e) => {
       e.preventDefault();
       showLockdown("⛔ Einfügen ist nicht erlaubt.");
@@ -65,6 +65,13 @@
 
       errorDiv.textContent = "";
       inputField.classList.remove("invalid");
+    });
+
+    // Enter-Taste für Neustart
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && inputField.disabled) {
+        resetGame();
+      }
     });
 
     function handleError(message) {
