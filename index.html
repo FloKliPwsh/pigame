@@ -2,21 +2,23 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Nachkommastellen von π</title>
+  <title>PI Game BETA</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <h1>Tippe die Nachkommastellen von π</h1>
+  <div class="container">
+    <h1 class="title">PI Game <span class="beta">BETA</span></h1>
+    <p class="subtitle">Tippe die Nachkommastellen von π</p>
 
-  <div class="input-wrapper">
-    <span class="prefix">3,…</span>
-    <input type="text" id="decimalInput" placeholder="z. B. 14159" autocomplete="off" />
+    <div class="input-wrapper">
+      <span class="prefix">3,…</span>
+      <input type="text" id="decimalInput" placeholder="z. B. 14159" autocomplete="off" />
+    </div>
+
+    <div id="error" class="error"></div>
+    <button id="resetButton" onclick="resetGame()" hidden>🔁 Neustart</button>
   </div>
-
-  <div id="error" class="error"></div>
-
-  <button id="resetButton" onclick="resetGame()" hidden>🔁 Neustart</button>
 
   <script>
     const piDecimals = "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
@@ -28,24 +30,19 @@
     inputField.addEventListener('input', () => {
       const input = inputField.value.trim();
 
-      // Prüfe: Nur Ziffern erlaubt
       if (!/^\d*$/.test(input)) {
         handleError("⚠️ Nur Ziffern erlaubt!");
         return;
       }
 
-      // Vergleiche mit PI-Nachkommastellen
       const expected = piDecimals.substring(0, input.length);
       if (input !== expected) {
         const correctDigits = input.split('').findIndex((digit, i) => digit !== piDecimals[i]);
         const count = correctDigits === -1 ? input.length : correctDigits;
         handleError(`❌ Falsch! Du hattest ${count} Stelle(n) korrekt.`);
-        inputField.disabled = true;
-        resetButton.hidden = false;
         return;
       }
 
-      // Kein Fehler, also weiter
       errorDiv.textContent = "";
       inputField.classList.remove("invalid");
     });
