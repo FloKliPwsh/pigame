@@ -31,11 +31,11 @@
     // Sicherheitsmaßnahmen
     inputField.addEventListener('paste', (e) => {
       e.preventDefault();
-      showLockdown("⛔ Einfügen ist nicht erlaubt.");
+      showLockdown("⛔ Haha guter Versuch!");
     });
     inputField.addEventListener('drop', (e) => {
       e.preventDefault();
-      showLockdown("⛔ Drag & Drop ist deaktiviert.");
+      showLockdown("⛔ Haha guter Versuch!");
     });
     inputField.addEventListener('contextmenu', (e) => {
       e.preventDefault();
@@ -43,7 +43,7 @@
     inputField.addEventListener('beforeinput', (e) => {
       if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
         e.preventDefault();
-        showLockdown("⛔ Einfügen ist nicht erlaubt.");
+        showLockdown("⛔ Haha guter Versuch!");
       }
     });
 
