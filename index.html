@@ -22,18 +22,30 @@
   </div>
 
   <script>
-    // Mindestens 150 Pi-Nachkommastellen (nur Ziffern)
-    const piDecimals =
-      "141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481";
+    const piDecimals = "141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481";
 
     const inputField = document.getElementById('decimalInput');
     const errorDiv = document.getElementById('error');
     const resetButton = document.getElementById('resetButton');
 
-    // Copy-Paste, Drop & Rechtsklick blockieren
-    inputField.addEventListener('paste', e => e.preventDefault());
-    inputField.addEventListener('drop', e => e.preventDefault());
-    inputField.addEventListener('contextmenu', e => e.preventDefault());
+    // Schutz: Kein Einfügen, Drag & Drop oder Rechtsklick
+    inputField.addEventListener('paste', (e) => {
+      e.preventDefault();
+      showLockdown("⛔ Einfügen ist nicht erlaubt.");
+    });
+    inputField.addEventListener('drop', (e) => {
+      e.preventDefault();
+      showLockdown("⛔ Drag & Drop ist deaktiviert.");
+    });
+    inputField.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
+    inputField.addEventListener('beforeinput', (e) => {
+      if (e.inputType === 'insertFromPaste' || e.inputType === 'insertFromDrop') {
+        e.preventDefault();
+        showLockdown("⛔ Einfügen ist nicht erlaubt.");
+      }
+    });
 
     inputField.addEventListener('input', () => {
       const input = inputField.value.trim();
@@ -56,6 +68,13 @@
     });
 
     function handleError(message) {
+      errorDiv.textContent = message;
+      inputField.classList.add("invalid");
+      inputField.disabled = true;
+      resetButton.hidden = false;
+    }
+
+    function showLockdown(message) {
       errorDiv.textContent = message;
       inputField.classList.add("invalid");
       inputField.disabled = true;
