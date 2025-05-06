@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Live-Prüfung: Nachkommastellen von π</title>
+  <title>Nachkommastellen von π</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -11,37 +11,60 @@
 
   <div class="input-wrapper">
     <span class="prefix">3,…</span>
-    <input type="text" id="decimalInput" placeholder="z. B. ...." autocomplete="off" />
+    <input type="text" id="decimalInput" placeholder="z. B. 14159" autocomplete="off" />
   </div>
 
   <div id="error" class="error"></div>
+
+  <button id="resetButton" onclick="resetGame()" hidden>🔁 Neustart</button>
 
   <script>
     const piDecimals = "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679";
 
     const inputField = document.getElementById('decimalInput');
     const errorDiv = document.getElementById('error');
+    const resetButton = document.getElementById('resetButton');
 
     inputField.addEventListener('input', () => {
       const input = inputField.value.trim();
 
       // Prüfe: Nur Ziffern erlaubt
       if (!/^\d*$/.test(input)) {
-        errorDiv.textContent = "⚠️ Nur Ziffern erlaubt!";
-        inputField.classList.add("invalid");
+        handleError("⚠️ Nur Ziffern erlaubt!");
         return;
       }
 
-      // Prüfe: Eingabe korrekt so weit?
+      // Vergleiche mit PI-Nachkommastellen
       const expected = piDecimals.substring(0, input.length);
       if (input !== expected) {
-        errorDiv.textContent = "❌ Falsch! Nicht die richtigen Pi-Nachkommastellen.";
-        inputField.classList.add("invalid");
-      } else {
-        errorDiv.textContent = "";
-        inputField.classList.remove("invalid");
+        const correctDigits = input.split('').findIndex((digit, i) => digit !== piDecimals[i]);
+        const count = correctDigits === -1 ? input.length : correctDigits;
+        handleError(`❌ Falsch! Du hattest ${count} Stelle(n) korrekt.`);
+        inputField.disabled = true;
+        resetButton.hidden = false;
+        return;
       }
+
+      // Kein Fehler, also weiter
+      errorDiv.textContent = "";
+      inputField.classList.remove("invalid");
     });
+
+    function handleError(message) {
+      errorDiv.textContent = message;
+      inputField.classList.add("invalid");
+      inputField.disabled = true;
+      resetButton.hidden = false;
+    }
+
+    function resetGame() {
+      inputField.value = "";
+      inputField.disabled = false;
+      inputField.classList.remove("invalid");
+      inputField.focus();
+      errorDiv.textContent = "";
+      resetButton.hidden = true;
+    }
   </script>
 
 </body>
