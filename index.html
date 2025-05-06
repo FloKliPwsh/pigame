@@ -1,11 +1,58 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Meine GitHub Page</title>
+  <title>Nachkommastellen prüfen</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+    }
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    input {
+      width: 100px;
+      padding: 0.5rem;
+      font-size: 1rem;
+    }
+    .error {
+      color: red;
+      margin-top: 1rem;
+    }
+  </style>
 </head>
 <body>
-  <h1>Ahoy, Welt!</h1>
+
+  <h1>Gib Nachkommastellen ein</h1>
+
+  <div class="input-wrapper">
+    <span>…</span>
+    <input type="text" id="decimalInput" placeholder="z. B. 0.25" />
+  </div>
+
+  <button onclick="validate()">Prüfen</button>
+  <div id="error" class="error"></div>
+
+  <script>
+    function validate() {
+      const input = document.getElementById('decimalInput').value.trim();
+      const errorDiv = document.getElementById('error');
+
+      // RegEx erlaubt z. B. 0.25, .75, 3.0
+      const decimalRegex = /^(\d*\.\d+|\d+\.)$/;
+
+      if (!decimalRegex.test(input)) {
+        errorDiv.textContent = "⚠️ Ungültige Eingabe! Bitte echte Nachkommastellen eingeben.";
+        throw new Error("Ungültige Eingabe abgebrochen."); // Bricht ab
+      } else {
+        errorDiv.textContent = "";
+        alert("✅ Korrekte Eingabe: " + input);
+      }
+    }
+  </script>
+
 </body>
 </html>
